@@ -4,24 +4,38 @@
 set -e
 
 #help menu-------------
-if [[ $# -eq 0 || $# -eq 1 ]];then
-echo "Try:'$0 --help'"
-if [ $1 == "--help" ];then
+if [[ $1 == "--help" ]];then
 ak=2
-echo "Usage: $0 [/location/FILENAME] [WORD] "
-echo "the scrip will search how many times 'WORD' appear in 'FILENAME' "
+echo "Usage: $0 [OPTION] [location/TEXTFILE]\n"
+echo "            -w  count the number of words 'TEXTFILE' "
+echo "            -l  count the number of lines in 'TEXTFILE' "
+echo "            -m  count the number of character in 'TEXTFILE' "
 echo "--"
 echo "Full documentation at: <https://github.com/Mike02vigaiga/scripting-linux-4school/>"
 fi
+if [[ $# -eq 0 || $# -eq 1 ]];then
+echo "try: '$0 --help' for more information"
 else
 #script----------------
-if [[ -e $1 ]];then
-count=$(grep -c $2 $1)
+if [[ -e $2 ]];then
+count=$(wc $1 $2)
 al=2
-echo "the string '$2' occours $count times in file '$1' "
-elif [[ $ak != 2 ]];then #se la variabile di controllo è =2 significa che la var $1 esiste ma come --help e non come file
-echo "the file $1 does not exist"
-elif [[ $al -eq 2 ]];then
-echo "error"
+case $1 in
+
+  -w)
+echo "number of words: $count"
+;;
+
+  -l)
+echo "number of lines; $count "
+;;
+
+  -m)
+echo "number of characters $count"
+;;
+esac
+
+else
+echo "file $2 does not exist"
 fi
 fi
